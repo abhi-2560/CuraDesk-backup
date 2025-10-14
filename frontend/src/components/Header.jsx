@@ -145,6 +145,8 @@ const Header = () => {
   return (
     <div className='rounded-3xl flex flex-col md:flex-row bg-green-300 overflow-hidden'>
 
+    <p>This is the content of the p tag</p>
+
       {/* Left Block */}
       <div className='w-full md:w-1/2 flex flex-col items-start justify-center gap-6 px-6 py-10 md:py-16'>
         <p className='text-3xl md:text-4xl lg:text-5xl text-black font-semibold leading-tight'>
