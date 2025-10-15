@@ -88,7 +88,13 @@ connectCloudinary() // TO CONNECT CLOUDINARY.JS FROM CONFIG
 
 //middleware
 app.use(express.json())
-app.use(cors())
+// app.use(cors())
+
+// for deployement
+app.use(cors({
+  origin: ["https://cura-desk-client.vercel.app"],
+  credentials: true,
+}));
 
 
 // api endpoints
