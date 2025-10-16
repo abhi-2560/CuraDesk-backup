@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 import io from 'socket.io-client'
+import { useNavigate } from 'react-router-dom'
 
-// Modern, full-page chat component used by patient and doctor pages
+// Polished, full-page chat component used by patient and doctor pages
 const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose }) => {
   const [socket, setSocket] = useState(null)
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const messagesRef = useRef(null)
 
+  const naviagate = useNavigate()
+
   useEffect(() => {
     if (!appointmentId) return
     const url = backendUrl.replace(/\/$/, '')
-    const s = io(url, { transports: ['websocket', 'polling'] })
+    const auth = token ? { token } : undefined
+    const s = io(url, { transports: ['websocket', 'polling'], auth })
     setSocket(s)
 
     s.on('connect', () => {
@@ -19,7 +23,6 @@ const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose }) =
     })
 
     s.on('chatHistory', (history) => {
-      // history is an array of { senderId, senderName, message, timestamp }
       setMessages(history || [])
     })
 
@@ -33,9 +36,7 @@ const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose }) =
   }, [appointmentId])
 
   useEffect(() => {
-    if (messagesRef.current) {
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight
-    }
+    if (messagesRef.current) messagesRef.current.scrollTop = messagesRef.current.scrollHeight
   }, [messages])
 
   const sendMessage = () => {
@@ -46,54 +47,74 @@ const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose }) =
   }
 
   return (
-    <div className="flex flex-col h-[80vh] max-h-[80vh] bg-white rounded-lg shadow-md overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b bg-white">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-semibold shadow-sm">{userName ? userName.charAt(0).toUpperCase() : 'D'}</div>
-          <div>
-            <div className="text-sm font-semibold text-gray-800">Chat</div>
-            <div className="text-xs text-gray-500">Appointment ID: {appointmentId}</div>
-          </div>
-        </div>
-        <div>
-          {onClose && <button onClick={onClose} className="text-sm text-gray-600 px-3 py-1 rounded hover:bg-gray-100">Close</button>}
-        </div>
-      </div>
+    
+      <div className="w-full max-w-7xl mx-auto my-8 flex-1 px-4">
+        <div className="h-[80vh] bg-white rounded-2xl shadow-lg overflow-hidden flex">
+          {/* Left column */}
+          <aside className="w-80 bg-indigo-50 p-6 hidden md:block">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-semibold">{userName ? userName.charAt(0).toUpperCase() : 'D'}</div>
+              <div>
+                <div className="text-sm font-semibold text-gray-800">{userName || 'Doctor'}</div>
+                <div className="text-xs text-gray-500">Appointment</div>
+                <div className="text-xs text-indigo-600 font-medium truncate">{appointmentId}</div>
+              </div>
+            </div>
+            <div className="text-sm text-gray-600">Conversation details</div>
+            <div className="mt-4 text-xs text-gray-500">Messages are tied to this appointment. Only the patient and doctor can participate.</div>
+          </aside>
 
-      {/* Messages */}
-      <div ref={messagesRef} className="p-4 overflow-auto flex-1 bg-gray-50">
-        <div className="flex flex-col gap-3">
-          {messages.length === 0 && <div className="text-center text-sm text-gray-400 mt-6">No messages yet. Say hello 👋</div>}
-          {messages.map((m, i) => {
-            const isMe = String(m.senderId) === String(userId)
-            return (
-              <div key={i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[70%] px-4 py-2 rounded-lg shadow-sm ${isMe ? 'bg-blue-600 text-white rounded-br-none' : 'bg-white text-gray-800 rounded-bl-none'}`}>
-                  {!isMe && <div className="text-xs text-gray-400 mb-1">{m.senderName || m.senderId}</div>}
-                  <div className="whitespace-pre-wrap">{m.message}</div>
-                  <div className="text-xs text-gray-300 mt-1 text-right">{m.timestamp ? new Date(m.timestamp).toLocaleTimeString() : ''}</div>
+          {/* Main chat */}
+          <section className="flex-1 flex flex-col">
+            <header className="px-6 py-4 border-b flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">{userName ? userName.charAt(0).toUpperCase() : 'D'}</div>
+                <div>
+                  <div className="text-lg font-semibold text-gray-800">{userName || 'Doctor'}</div>
+                  <div className="text-xs text-gray-500">Appointment: <span className="text-indigo-600 font-medium">{appointmentId}</span></div>
                 </div>
               </div>
-            )
-          })}
-        </div>
-      </div>
+              
+            </header>
 
-      {/* Input area */}
-      <div className="px-4 py-3 border-t bg-white">
-        <div className="flex items-center gap-2">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') sendMessage() }}
-            className="flex-1 border rounded-full px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-200"
-            placeholder="Type a message..."
-          />
-          <button onClick={sendMessage} className="px-4 py-2 bg-indigo-600 text-white rounded-full shadow">Send</button>
+            <div ref={messagesRef} className="flex-1 overflow-auto p-6 bg-[linear-gradient(180deg,#f8fafc,white)]">
+              <div className="mx-auto max-w-3xl flex flex-col gap-4">
+                {messages.length === 0 && <div className="text-center text-sm text-gray-400 mt-6">No messages yet — say hello 👋</div>}
+
+                {messages.map((m, i) => {
+                  const isMe = String(m.senderId) === String(userId)
+                  return (
+                    <div key={i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
+                      {!isMe && (
+                        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-700 mr-3">{(m.senderName || String(m.senderId) || '?').charAt(0).toUpperCase()}</div>
+                      )}
+                      <div className={`max-w-[80%] px-4 py-3 rounded-2xl shadow ${isMe ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-white text-gray-800 rounded-bl-none'}`}>
+                        <div className="text-sm whitespace-pre-wrap">{m.message}</div>
+                        <div className={`text-xs mt-2 ${isMe ? 'text-indigo-100' : 'text-gray-400'} text-right`}>{m.timestamp ? new Date(m.timestamp).toLocaleString() : ''}</div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div className="px-6 py-4 border-t bg-white">
+              <div className="max-w-3xl mx-auto flex items-center gap-3">
+                <button className="p-2 rounded-full bg-gray-100 text-gray-600" title="Attach">📎</button>
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') sendMessage() }}
+                  className="flex-1 border rounded-full px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  placeholder="Type your message..."
+                />
+                <button onClick={sendMessage} className="px-4 py-2 bg-indigo-600 text-white rounded-full shadow">Send</button>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
-    </div>
+    
   )
 }
 

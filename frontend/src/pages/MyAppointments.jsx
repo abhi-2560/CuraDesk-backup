@@ -147,7 +147,7 @@ const MyAppointments = () => {
                             {/* Chat button for paid, active appointments */}
                             {!item.cancelled && item.payment && !item.isCompleted && (
                                 <button
-                                    className="sm:min-w-48 py-2 border rounded-lg text-gray-700 bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
+                                    className="sm:min-w-48 py-2 border rounded-lg bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
                                     onClick={() => navigate(`/chat/${item._id}`)}
                                 >
                                     Chat with Doctor
