@@ -12,6 +12,7 @@ import About from './pages/About'
 import Contacts from './pages/Contacts'
 import MyProfile from './pages/MyProfile'
 import MyAppointments from './pages/MyAppointments'
+import ChatPage from './pages/ChatPage'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Appointment from './pages/Appointment'
@@ -32,6 +33,7 @@ const App = () => {
         <Route path='/contact' element={<Contacts />} />
         <Route path='/my-profile' element={<MyProfile />} />
         <Route path='/my-appointments' element={<MyAppointments />} />
+  <Route path='/chat/:appointmentId' element={<ChatPage />} />
         <Route path='/appointment/:docId' element={<Appointment />} />
 
       </Routes>

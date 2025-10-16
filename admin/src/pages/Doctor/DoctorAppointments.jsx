@@ -1,13 +1,18 @@
-import React from 'react'
-import { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { DoctorContext } from '../../context/DoctorContext'
 import { AppContext } from '../../context/AppContext'
 import { assets } from '../../assets/assets'
+// import Chat from '../../../frontend/src/components/Chat'
+import Chat from '../../../../frontend/src/components/Chat'
 
 const DoctorAppointments = () => {
-
   const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } = useContext(DoctorContext)
   const { slotDateFormat, calculateAge, currency } = useContext(AppContext)
+  const { backendUrl, token } = useContext(AppContext)
+  const [showChat, setShowChat] = useState(false)
+  const [chatInfo, setChatInfo] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (dToken) {
@@ -51,10 +56,16 @@ const DoctorAppointments = () => {
                 : <div className='flex'>
                   <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
                   <img onClick={() => completeAppointment(item._id)} className='w-10 cursor-pointer' src={assets.tick_icon} alt="" />
+                  {/* Chat button for doctor to chat with patient of this appointment */}
+                  <button onClick={() => navigate(`/doctor-chat/${item._id}`)} className='ml-2 text-sm px-2 py-1 border rounded text-blue-600'>Chat</button>
                 </div>
             }
           </div>
         ))}
+
+        {showChat && chatInfo && (
+          <Chat backendUrl={backendUrl} token={dToken || token} appointmentId={chatInfo.appointmentId} userId={chatInfo.userId} onClose={() => setShowChat(false)} />
+        )}
       </div>
 
     </div>
