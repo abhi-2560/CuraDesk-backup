@@ -26,6 +26,16 @@ const MyAppointments = () => {
 
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                toast.success('Appointment ID copied!');
+            })
+            .catch(() => {
+                toast.error('Failed to copy');
+            });
+    };
+
     const slotDateFormat = (slotDate) => {
         const dateArray = slotDate.split('_')
         return dateArray[0] + " " + months[Number(dateArray[1])] + " " + dateArray[2]
@@ -130,23 +140,27 @@ const MyAppointments = () => {
                             <p className=' mt-1'><span className='text-sm text-[#3C3C3C] font-medium'>Date & Time:</span> {slotDateFormat(item.slotDate)} |  {item.slotTime}</p>
                         </div>
                         <div />
+
                         <div className='flex flex-col gap-2 justify-end text-sm text-center'>
-                            {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && <button onClick={() => setPayment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300'>Pay Online</button>}
+                            {!item.cancelled && item.payment && !item.isCompleted && <button onClick={()=>{handleCopy(item._id)}} className="sm:min-w-48 py-2 px-6 border rounded-lg text-sm font-medium bg-black text-white hover:bg-white hover:text-black transition-all duration-300">Appointment ID : {item._id}</button>}
+
+                            {/* Chat button for paid, active appointments */}
+                            {!item.cancelled && item.payment && !item.isCompleted && (
+                                <button
+                                    className="sm:min-w-48 py-2 border rounded-lg text-gray-700 bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
+                                    onClick={() => navigate(`/chat/${item._id}`)}
+                                >
+                                    Chat with Doctor
+                                </button>
+                            )}
+                        </div>
+                        <div className='flex flex-col gap-2 justify-end text-sm text-center'>
+                            {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && <button onClick={() => setPayment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white hover:bg-black transition-all duration-300'>Pay Online</button>}
                             {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentStripe(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.stripe_logo} alt="" /></button>}
                             {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentRazorpay(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.razorpay_logo} alt="" /></button>}
                             {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border rounded text-black bg-green-500'>Paid</button>}
 
-                            {!item.cancelled && item.payment && !item.isCompleted && <button className="sm:min-w-48 py-2 px-6 border rounded-lg text-sm font-medium text-gray-700 bg-gray-50 border-gray-400 hover:bg-gray-200 transition-all duration-300">Appointment ID : {item._id}</button>}
 
-                            {/* Chat button for paid, active appointments */}
-                                                        {!item.cancelled && item.payment && !item.isCompleted && (
-                                                            <button
-                                                                className="sm:min-w-48 py-2 border rounded text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white transition-all duration-300"
-                                                                onClick={() => navigate(`/chat/${item._id}`)}
-                                                            >
-                                                                Chat with Doctor
-                                                            </button>
-                                                        )}
 
                             {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-600'>Completed</button>}
 
