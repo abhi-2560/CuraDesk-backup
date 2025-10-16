@@ -238,7 +238,7 @@ export default MyAppointments
 //     "Dec",
 //   ];
 
-  
+
 //   const slotDateFormat = (slotDate) => {
 //     const dateArray = slotDate.split("_");
 //     return (
@@ -263,7 +263,7 @@ export default MyAppointments
 //     }
 //   };
 
-  
+
 
 //   const cancelAppointment = async (appointmentId) => {
 //     try {
@@ -509,7 +509,7 @@ const MyAppointments = () => {
             const { data } = await axios.post(backendUrl + '/api/user/payment-razorpay', { appointmentId }, { headers: { token } })
             if (data.success) {
                 initPay(data.order)
-            }else{
+            } else {
                 toast.error(data.message)
             }
         } catch (error) {
@@ -525,7 +525,7 @@ const MyAppointments = () => {
             if (data.success) {
                 const { session_url } = data
                 window.location.replace(session_url)
-            }else{
+            } else {
                 toast.error(data.message)
             }
         } catch (error) {
@@ -565,6 +565,11 @@ const MyAppointments = () => {
                             {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentStripe(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.stripe_logo} alt="" /></button>}
                             {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentRazorpay(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.razorpay_logo} alt="" /></button>}
                             {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border rounded text-black bg-green-500'>Paid</button>}
+
+                            {!item.cancelled && item.payment && !item.isCompleted && <button className="sm:min-w-48 py-2 px-6 border rounded-lg text-sm font-medium text-gray-700 bg-gray-50 border-gray-400 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-300">
+                                Appointment ID : {item._id}
+                            </button>}
+
 
                             {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-600'>Completed</button>}
 
