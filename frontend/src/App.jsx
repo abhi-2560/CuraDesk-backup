@@ -16,13 +16,15 @@ import ChatPage from './pages/ChatPage'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Appointment from './pages/Appointment'
+import SymptomChecker from './pages/SymptomChecker'
+import SymptomFAB from './components/SymptomFAB'
 import { ToastContainer, toast } from 'react-toastify';
 
 
 const App = () => {
   return (
     <div className='mx-4 sm:mx-[10%]'>
-      <ToastContainer/>
+      <ToastContainer />
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
@@ -33,11 +35,13 @@ const App = () => {
         <Route path='/contact' element={<Contacts />} />
         <Route path='/my-profile' element={<MyProfile />} />
         <Route path='/my-appointments' element={<MyAppointments />} />
-  <Route path='/chat/:appointmentId' element={<ChatPage />} />
+        <Route path='/chat/:appointmentId' element={<ChatPage />} />
+        <Route path='/symptom-checker' element={<SymptomChecker />} />
         <Route path='/appointment/:docId' element={<Appointment />} />
 
       </Routes>
       <Footer />
+      <SymptomFAB />
     </div>
   )
 }
