@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
-import Chat from '../../../../frontend/src/components/Chat'
+import Chat from '../../components/Chat'
 import { AppContext } from '../../context/AppContext'
 import { DoctorContext } from '../../context/DoctorContext'
 
