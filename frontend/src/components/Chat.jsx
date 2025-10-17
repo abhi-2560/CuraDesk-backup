@@ -3,13 +3,13 @@ import io from 'socket.io-client'
 import { useNavigate } from 'react-router-dom'
 
 // Polished, full-page chat component used by patient and doctor pages
-const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose }) => {
+const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose, bubbleColor }) => {
   const [socket, setSocket] = useState(null)
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const messagesRef = useRef(null)
 
-  const naviagate = useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!appointmentId) return
@@ -66,6 +66,7 @@ const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose }) =
 
           {/* Main chat */}
           <section className="flex-1 flex flex-col">
+            
             <header className="px-6 py-4 border-b flex items-center justify-between bg-white">
               <div className="flex items-center gap-4">
                 <div className="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">{userName ? userName.charAt(0).toUpperCase() : 'D'}</div>
@@ -79,18 +80,28 @@ const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose }) =
 
             <div ref={messagesRef} className="flex-1 overflow-auto p-6 bg-[linear-gradient(180deg,#f8fafc,white)]">
               <div className="mx-auto max-w-3xl flex flex-col gap-4">
-                {messages.length === 0 && <div className="text-center text-sm text-gray-400 mt-6">No messages yet — say hello 👋</div>}
+                {messages.length === 0 && <div className="text-center text-sm text-gray-400 mt-6">No messages yet — say hello</div>}
 
                 {messages.map((m, i) => {
                   const isMe = String(m.senderId) === String(userId)
+                  // safe initial: prefer senderName, then fallback to first char of senderId, else '?'
+                  const initial = (m.senderName && String(m.senderName).charAt(0)) || (m.senderId ? String(m.senderId).charAt(0) : '?')
+
+                  // If a bubbleColor is provided, force that background and dark text for visibility (doctor side fix).
+                  const forcedBubbleStyle = bubbleColor ? { backgroundColor: bubbleColor, color: '#111827' } : undefined
+                  const forcedTimeStyle = bubbleColor ? { color: '#4b5563' } : undefined
+
                   return (
                     <div key={i} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                       {!isMe && (
-                        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-700 mr-3">{(m.senderName || String(m.senderId) || '?').charAt(0).toUpperCase()}</div>
+                        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-700 mr-3">{String(initial).toUpperCase()}</div>
                       )}
-                      <div className={`max-w-[80%] px-4 py-3 rounded-2xl shadow ${isMe ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-white text-gray-800 rounded-bl-none'}`}>
+                      <div
+                        className={`max-w-[80%] px-4 py-3 rounded-2xl shadow ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-black text-white rounded-bl-none'}`}
+                        style={forcedBubbleStyle}
+                      >
                         <div className="text-sm whitespace-pre-wrap">{m.message}</div>
-                        <div className={`text-xs mt-2 ${isMe ? 'text-indigo-100' : 'text-gray-400'} text-right`}>{m.timestamp ? new Date(m.timestamp).toLocaleString() : ''}</div>
+                        <div className={`text-xs mt-2 ${isMe ? 'text-indigo-100' : 'text-green-200'} text-right`} style={forcedTimeStyle}>{m.timestamp ? new Date(m.timestamp).toLocaleString() : ''}</div>
                       </div>
                     </div>
                   )
@@ -100,7 +111,7 @@ const Chat = ({ backendUrl, token, appointmentId, userId, userName, onClose }) =
 
             <div className="px-6 py-4 border-t bg-white">
               <div className="max-w-3xl mx-auto flex items-center gap-3">
-                <button className="p-2 rounded-full bg-gray-100 text-gray-600" title="Attach">📎</button>
+                <button className="p-2 rounded-full bg-black text-white" title="Attach">Upload</button>
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
