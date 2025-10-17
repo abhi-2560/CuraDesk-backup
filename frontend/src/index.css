@@ -28,3 +28,16 @@
         @apply text-white bg-blue-700
     }
 }
+
+/* SymptomChecker card enter animation and small loader */
+.card-enter{
+    animation: cardEnter 400ms cubic-bezier(.2,.9,.3,1) both;
+}
+
+@keyframes cardEnter{
+    from{ transform: translateY(10px); opacity: 0 }
+    to{ transform: translateY(0); opacity: 1 }
+}
+
+.loader{ border-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(255,255,255,0.8); border-top-color: transparent; animation: spin 800ms linear infinite }
+@keyframes spin{ to { transform: rotate(360deg) } }
