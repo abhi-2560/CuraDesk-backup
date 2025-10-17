@@ -41,3 +41,15 @@
 
 .loader{ border-width: 2px; border-top-width: 2px; border-style: solid; border-color: rgba(255,255,255,0.8); border-top-color: transparent; animation: spin 800ms linear infinite }
 @keyframes spin{ to { transform: rotate(360deg) } }
+
+/* FAB styles */
+.fab{ overflow: hidden }
+.fab .fab-ripple{ background: radial-gradient(circle, rgba(255,255,255,0.18) 10%, transparent 10.01%) center/15000% no-repeat; transform-origin: center; transition: background 0.8s, opacity 0.4s }
+.group:hover .fab-ripple{ background-size: 100%; opacity: 1; transition: background 0.4s, opacity 0.2s }
+
+/* small bounce on hover to attract attention */
+.fab{ transition: transform 300ms cubic-bezier(.2,.9,.3,1) }
+.fab:hover{ transform: translateY(-6px) rotate(-2deg) }
+
+/* tooltip arrow fix */
+.fab + .tooltip-arrow{ display: none }
