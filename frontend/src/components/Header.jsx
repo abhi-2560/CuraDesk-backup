@@ -143,7 +143,7 @@ import { assets } from '../assets/assets'
 
 const Header = () => {
   return (
-    <div className='rounded-3xl flex flex-col md:flex-row bg-green-300 overflow-hidden'>
+    <div className='rounded-3xl flex flex-col md:flex-row bg-gradient-to-r from-teal-300 to-blue-300 overflow-hidden'>
 
 
 

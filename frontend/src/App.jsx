@@ -26,20 +26,23 @@ const App = () => {
     <div className='mx-4 sm:mx-[10%]'>
       <ToastContainer />
       <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/doctors' element={<Doctor />} />
-        <Route path='/doctors/:speciality' element={<Doctor />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/contact' element={<Contacts />} />
-        <Route path='/my-profile' element={<MyProfile />} />
-        <Route path='/my-appointments' element={<MyAppointments />} />
-        <Route path='/chat/:appointmentId' element={<ChatPage />} />
-        <Route path='/symptom-checker' element={<SymptomChecker />} />
-        <Route path='/appointment/:docId' element={<Appointment />} />
+      <div className="pt-[80px]">
 
-      </Routes>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/doctors' element={<Doctor />} />
+          <Route path='/doctors/:speciality' element={<Doctor />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/contact' element={<Contacts />} />
+          <Route path='/my-profile' element={<MyProfile />} />
+          <Route path='/my-appointments' element={<MyAppointments />} />
+          <Route path='/chat/:appointmentId' element={<ChatPage />} />
+          <Route path='/symptom-checker' element={<SymptomChecker />} />
+          <Route path='/appointment/:docId' element={<Appointment />} />
+
+        </Routes>
+      </div>
       <Footer />
       <SymptomFAB />
     </div>
