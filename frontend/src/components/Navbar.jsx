@@ -166,7 +166,7 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/symptom-checker"
             className={({ isActive }) =>
-              `transition-all text-[16px] ${isActive ? "text-blue-600 underline":""
+              `transition-all text-[16px] ${isActive ? "text-blue-600 underline" : ""
               }`
             }
           >
