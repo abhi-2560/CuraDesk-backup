@@ -107,7 +107,7 @@ const HeroSection = () => {
           <div className='relative'>
             <div className='relative'>
               <img 
-                src={assets.header_img} 
+                src={assets.contact_image} 
                 alt='Healthcare professionals' 
                 className='w-full h-auto rounded-3xl shadow-2xl'
               />
