@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import io from 'socket.io-client'
+import { io } from 'socket.io-client'
 import { useNavigate } from 'react-router-dom'
 
 // Modern doctor-side chat component with sleek UI and smooth interactions
