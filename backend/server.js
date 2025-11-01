@@ -95,7 +95,6 @@ app.use(cors({
   origin: ["https://cura-desk-health-client.vercel.app",
     "https://cura-desk-health-admin.vercel.app" 
   ]
-  
 }));
 
 app.use('/api/admin', adminRouter);
