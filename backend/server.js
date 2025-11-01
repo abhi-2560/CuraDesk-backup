@@ -90,7 +90,13 @@ connectDB();
 connectCloudinary();
 
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: ["https://cura-desk-client.vercel.app",
+    "https://cura-desk-admin.vercel.app" 
+  ]
+  
+}));
 
 app.use('/api/admin', adminRouter);
 app.use('/api/doctor', doctorRouter);
