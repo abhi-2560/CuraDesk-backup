@@ -93,8 +93,10 @@ app.use(express.json());
 // app.use(cors());
 app.use(cors({
   origin: ["https://cura-desk-health-client.vercel.app",
-    "https://cura-desk-health-admin.vercel.app" 
-  ]
+    "https://cura-desk-health-admin.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:5174"
+]
 }));
 
 app.use('/api/admin', adminRouter);
@@ -108,10 +110,18 @@ app.get('/', (req, res) => {
 });
 
 // Socket.io setup
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://cura-desk-health-admin.vercel.app",
+    "https://cura-desk-health-client.vercel.app"
+];
+
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: '*', // Change to your frontend URL in production
+        origin: allowedOrigins, // Change to your frontend URL in production
         methods: ['GET', 'POST'],
     },
 });
