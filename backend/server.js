@@ -92,8 +92,8 @@ connectCloudinary();
 app.use(express.json());
 // app.use(cors());
 app.use(cors({
-  origin: ["https://cura-desk-client.vercel.app",
-    "https://cura-desk-admin.vercel.app" 
+  origin: ["https://cura-desk-health-client.vercel.app",
+    "https://cura-desk-health-admin.vercel.app" 
   ]
   
 }));
