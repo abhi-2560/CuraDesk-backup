@@ -105,6 +105,7 @@
 // }
 
 // export default { checkSymptoms }import 'dotenv/config'import 'dotenv/config'
+
 import { GoogleGenerativeAI } from "@google/generative-ai"
 
 export const checkSymptoms = async (req, res) => {
@@ -128,7 +129,7 @@ export const checkSymptoms = async (req, res) => {
     console.log("Sending request to Gemini 1.5 Flash...")
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
     const prompt = `
       You are a medical triage assistant.
