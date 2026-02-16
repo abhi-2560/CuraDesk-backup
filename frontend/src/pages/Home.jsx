@@ -16,13 +16,13 @@ const Home = () => {
         {/* New Modern Sections */}
         <HeroSection />
         <FeaturesSection />
-        <Header/>
+        {/* <Header/> */}
         <StatsSection />
         
         {/* Original Sections */}
         <SpecialityMenu/>
         <TopDoctors/>
-        {/* <Banner/> */}
+        
         <TestimonialsSection />
         
     </div>
