@@ -19,6 +19,7 @@ import Appointment from './pages/Appointment'
 import SymptomChecker from './pages/SymptomChecker'
 import SymptomFAB from './components/SymptomFAB'
 import { ToastContainer, toast } from 'react-toastify';
+import Infochat from './pages/infochat';
 
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contacts />} />
+          <Route path='/Infochat' element={<Infochat />} />
           <Route path='/my-profile' element={<MyProfile />} />
           <Route path='/my-appointments' element={<MyAppointments />} />
           <Route path='/chat/:appointmentId' element={<ChatPage />} />

@@ -164,6 +164,15 @@ const Navbar = () => {
           >
             Contact
           </NavLink>
+          <NavLink
+            to="/Infochat"
+            className={({ isActive }) =>
+              `transition-all text-[16px] ${isActive ? "text-blue-600 underline" : "text-gray-700 hover:text-black"
+              }`
+            }
+          >
+            Chat with doctor
+          </NavLink>
           <NavLink to="/symptom-checker"
             className={({ isActive }) =>
               `transition-all text-[16px] ${isActive ? "text-blue-600 underline" : ""
